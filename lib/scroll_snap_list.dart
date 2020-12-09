@@ -95,6 +95,9 @@ class ScrollSnapList extends StatefulWidget {
   ///Custom Opacity of items off center
   final double dynamicItemOpacity;
 
+  // Boolean flag to determine whether it should start from the beginning without any padding
+  final bool startWithNoPadding;
+
   ScrollSnapList({
     this.background,
     @required this.itemBuilder,
@@ -103,6 +106,7 @@ class ScrollSnapList extends StatefulWidget {
     this.duration = 500,
     this.endOfListTolerance,
     this.focusOnItemTap = true,
+    this.startWithNoPadding = false,
     this.focusToItem,
     this.itemCount,
     @required this.itemSize,
@@ -328,11 +332,17 @@ class ScrollSnapListState extends State<ScrollSnapList> {
               child: ListView.builder(
                 key: widget.listViewKey,
                 controller: widget.listController,
-                padding: widget.scrollDirection == Axis.horizontal
-                    ? EdgeInsets.symmetric(horizontal: _listPadding)
-                    : EdgeInsets.symmetric(
-                        vertical: _listPadding,
-                      ),
+                padding: widget.startWithNoPadding
+                    ? widget.scrollDirection == Axis.horizontal
+                        ? EdgeInsets.only(right: _listPadding)
+                        : EdgeInsets.only(
+                            bottom: _listPadding,
+                          )
+                    : widget.scrollDirection == Axis.horizontal
+                        ? EdgeInsets.symmetric(horizontal: _listPadding)
+                        : EdgeInsets.symmetric(
+                            vertical: _listPadding,
+                          ),
                 reverse: widget.reverse,
                 scrollDirection: widget.scrollDirection,
                 itemBuilder: _buildListItem,
