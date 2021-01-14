@@ -282,30 +282,7 @@ class ScrollSnapListState extends State<ScrollSnapList> {
             onTapDown: (_) {},
             child: NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo is ScrollEndNotification) {
-                  // dont snap until after first drag
-                  if (isInit) {
-                    return true;
-                  }
-
-                  double tolerance =
-                      widget.endOfListTolerance ?? (widget.itemSize / 2);
-                  if (scrollInfo.metrics.pixels >=
-                      scrollInfo.metrics.maxScrollExtent - tolerance) {
-                    _onReachEnd();
-                  }
-
-                  //snap the selection
-                  double offset = _calcCardLocation(
-                    pixel: scrollInfo.metrics.pixels,
-                    itemSize: widget.itemSize,
-                  );
-
-                  //only animate if not yet snapped (tolerance 0.01 pixel)
-                  if ((scrollInfo.metrics.pixels - offset).abs() > 0.01) {
-                    _animateScroll(offset);
-                  }
-                } else if (scrollInfo is ScrollUpdateNotification) {
+                if (scrollInfo is ScrollUpdateNotification) {
                   //save pixel position for scale-effect
                   if (widget.dynamicItemSize) {
                     setState(() {
